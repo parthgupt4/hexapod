@@ -27,8 +27,9 @@ from tripod_direct import (
     turn_right,
 )
 
-# Linux gamepad axis range for 16-bit drivers.
-AXIS_MAX = 32768.0
+# This controller reports axes as 0..255 unsigned with 128 at rest.
+AXIS_CENTER = 128.0
+AXIS_HALF_RANGE = 128.0
 # Fraction of full deflection required before a direction registers.
 DEADZONE = 0.4
 
@@ -46,7 +47,7 @@ state_lock = threading.Lock()
 
 # Set to True to print every controller event — use this to discover the
 # correct axis codes and value range for your controller.
-DEBUG_PRINT_EVENTS = True
+DEBUG_PRINT_EVENTS = False
 
 
 def gamepad_reader():
@@ -65,10 +66,10 @@ def gamepad_reader():
             if event.ev_type == 'Absolute':
                 if event.code == 'ABS_X':
                     with state_lock:
-                        state['x'] = event.state / AXIS_MAX
+                        state['x'] = (event.state - AXIS_CENTER) / AXIS_HALF_RANGE
                 elif event.code == 'ABS_Y':
                     with state_lock:
-                        state['y'] = (event.state / AXIS_MAX) * Y_FORWARD_SIGN
+                        state['y'] = ((event.state - AXIS_CENTER) / AXIS_HALF_RANGE) * Y_FORWARD_SIGN
             elif event.ev_type == 'Key' and event.code == 'BTN_SOUTH':
                 if event.state == 1:
                     with state_lock:
