@@ -26,6 +26,8 @@ L_SWING = 44
 R_SWING = 30
 # How high legs lift
 LIFT  = 25
+# How deep the body drops during a squat (coxa fold, same polarity as LIFT)
+SQUAT_DEPTH = 25
 
 def set_servo(leg, femur, coxa, tibia):
     f_ch, c_ch, t_ch = CH[leg]
@@ -53,6 +55,20 @@ def home():
         kit1.servo[ch].angle = 90
     kit2.servo[0].angle = 90
     kit2.servo[1].angle = 90
+
+def squat(reps=10, down_delay=0.15, up_delay=0.15):
+    # All 6 legs fold simultaneously. Left coxa goes <90, right coxa goes >90
+    # (same direction as LIFT), so feet stay planted and the body drops.
+    for _ in range(reps):
+        set_servo('L1', 90, 90 - SQUAT_DEPTH, 90)
+        set_servo('L2', 90, 90 - SQUAT_DEPTH, 90)
+        set_servo('L3', 90, 90 - SQUAT_DEPTH, 90)
+        set_servo('R1', 90, 90 + SQUAT_DEPTH, 90)
+        set_servo('R2', 90, 90 + SQUAT_DEPTH, 90)
+        set_servo('R3', 90, 90 + SQUAT_DEPTH, 90)
+        time.sleep(down_delay)
+        neutral()
+        time.sleep(up_delay)
 
 def step_forward():
     """
@@ -110,6 +126,12 @@ if __name__ == '__main__':
     for i in range(5):
         print(f"Step {i+1}")
         step_forward()
+
+    neutral()
+    time.sleep(1)
+
+    print("Squatting 10 times...")
+    squat(reps=10)
 
     neutral()
     print("Done")
