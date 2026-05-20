@@ -56,6 +56,104 @@ def home():
     kit2.servo[0].angle = 90
     kit2.servo[1].angle = 90
 
+def step_backward():
+    # Mirror of step_forward: every femur swing direction is flipped.
+    set_servo('L1', 90+L_SWING, 90-LIFT, 90)
+    set_servo('R2', 90-R_SWING, 90+LIFT, 90)
+    set_servo('L3', 90+L_SWING, 90-LIFT, 90)
+    set_servo('R1', 90+R_SWING, 90, 90)
+    set_servo('L2', 90-L_SWING, 90, 90)
+    set_servo('R3', 90+R_SWING, 90, 90)
+    time.sleep(0.3)
+
+    set_servo('L1', 90+L_SWING, 90, 90)
+    set_servo('R2', 90-R_SWING, 90, 90)
+    set_servo('L3', 90+L_SWING, 90, 90)
+    time.sleep(0.1)
+
+    set_servo('R1', 90-R_SWING, 90+LIFT, 90)
+    set_servo('L2', 90+L_SWING, 90-LIFT, 90)
+    set_servo('R3', 90-R_SWING, 90+LIFT, 90)
+    set_servo('L1', 90-L_SWING, 90, 90)
+    set_servo('R2', 90+R_SWING, 90, 90)
+    set_servo('L3', 90-L_SWING, 90, 90)
+    time.sleep(0.3)
+
+    set_servo('R1', 90-R_SWING, 90, 90)
+    set_servo('L2', 90+L_SWING, 90, 90)
+    set_servo('R3', 90-R_SWING, 90, 90)
+    time.sleep(0.1)
+
+    neutral()
+    time.sleep(0.1)
+
+def turn_left():
+    # CCW rotation: right legs walk forward, left legs walk backward.
+    # Phase 1: lift group A; group B (planted) drives the turn
+    set_servo('L1', 90+L_SWING, 90-LIFT, 90)   # L back, lifted
+    set_servo('R2', 90+R_SWING, 90+LIFT, 90)   # R forward, lifted
+    set_servo('L3', 90+L_SWING, 90-LIFT, 90)
+    set_servo('R1', 90-R_SWING, 90, 90)        # R planted, pushing back
+    set_servo('L2', 90-L_SWING, 90, 90)        # L planted, pushing forward
+    set_servo('R3', 90-R_SWING, 90, 90)
+    time.sleep(0.3)
+
+    # Phase 2: plant group A
+    set_servo('L1', 90+L_SWING, 90, 90)
+    set_servo('R2', 90+R_SWING, 90, 90)
+    set_servo('L3', 90+L_SWING, 90, 90)
+    time.sleep(0.1)
+
+    # Phase 3: lift group B; group A drives
+    set_servo('R1', 90+R_SWING, 90+LIFT, 90)   # R forward, lifted
+    set_servo('L2', 90+L_SWING, 90-LIFT, 90)   # L back, lifted
+    set_servo('R3', 90+R_SWING, 90+LIFT, 90)
+    set_servo('L1', 90-L_SWING, 90, 90)        # L planted, pushing forward
+    set_servo('R2', 90-R_SWING, 90, 90)        # R planted, pushing back
+    set_servo('L3', 90-L_SWING, 90, 90)
+    time.sleep(0.3)
+
+    # Phase 4: plant group B
+    set_servo('R1', 90+R_SWING, 90, 90)
+    set_servo('L2', 90+L_SWING, 90, 90)
+    set_servo('R3', 90+R_SWING, 90, 90)
+    time.sleep(0.1)
+
+    neutral()
+    time.sleep(0.1)
+
+def turn_right():
+    # CW rotation: left legs walk forward, right legs walk backward.
+    # Mirror of turn_left — every femur swing direction is flipped.
+    set_servo('L1', 90-L_SWING, 90-LIFT, 90)
+    set_servo('R2', 90-R_SWING, 90+LIFT, 90)
+    set_servo('L3', 90-L_SWING, 90-LIFT, 90)
+    set_servo('R1', 90+R_SWING, 90, 90)
+    set_servo('L2', 90+L_SWING, 90, 90)
+    set_servo('R3', 90+R_SWING, 90, 90)
+    time.sleep(0.3)
+
+    set_servo('L1', 90-L_SWING, 90, 90)
+    set_servo('R2', 90-R_SWING, 90, 90)
+    set_servo('L3', 90-L_SWING, 90, 90)
+    time.sleep(0.1)
+
+    set_servo('R1', 90-R_SWING, 90+LIFT, 90)
+    set_servo('L2', 90-L_SWING, 90-LIFT, 90)
+    set_servo('R3', 90-R_SWING, 90+LIFT, 90)
+    set_servo('L1', 90+L_SWING, 90, 90)
+    set_servo('R2', 90+R_SWING, 90, 90)
+    set_servo('L3', 90+L_SWING, 90, 90)
+    time.sleep(0.3)
+
+    set_servo('R1', 90-R_SWING, 90, 90)
+    set_servo('L2', 90-L_SWING, 90, 90)
+    set_servo('R3', 90-R_SWING, 90, 90)
+    time.sleep(0.1)
+
+    neutral()
+    time.sleep(0.1)
+
 def squat(reps=10, down_delay=0.15, up_delay=0.15):
     # All 6 legs fold simultaneously. Left coxa goes <90, right coxa goes >90
     # (same direction as LIFT), so feet stay planted and the body drops.
