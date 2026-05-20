@@ -44,6 +44,11 @@ state = {
 state_lock = threading.Lock()
 
 
+# Set to True to print every controller event — use this to discover the
+# correct axis codes and value range for your controller.
+DEBUG_PRINT_EVENTS = True
+
+
 def gamepad_reader():
     while True:
         try:
@@ -55,6 +60,8 @@ def gamepad_reader():
             return
 
         for event in events:
+            if DEBUG_PRINT_EVENTS and event.ev_type in ('Absolute', 'Key'):
+                print(f"  event: type={event.ev_type} code={event.code} state={event.state}")
             if event.ev_type == 'Absolute':
                 if event.code == 'ABS_X':
                     with state_lock:
