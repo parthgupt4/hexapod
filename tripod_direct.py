@@ -22,7 +22,7 @@ NEUTRAL_COXA  = 90
 NEUTRAL_TIBIA = 90
 
 # How far forward/back legs swing (split per side to correct drift)
-L_SWING = 46
+L_SWING = 44
 R_SWING = 30
 # How high legs lift
 LIFT  = 25
