@@ -4,8 +4,8 @@ import time
 kit = ServoKit(channels=16)
 
 print("Servo Calibration Script")
-print("Sending 90 degrees to each servo one at a time")
-print("Press Enter to move to next servo, Ctrl+C to quit\n")
+print("Plug each servo into channel 0, press Enter to move to 90 degrees")
+print("Script will HOLD position until you confirm horn is attached\n")
 
 servo_labels = [
     "L1_coxa", "L1_femur", "L1_tibia",
@@ -17,9 +17,12 @@ servo_labels = [
 ]
 
 for i, label in enumerate(servo_labels):
-    input(f"Press Enter to calibrate channel {i} ({label})...")
-    kit.servo[i].angle = 90
-    print(f"  → {label} set to 90°. Attach horn now if not attached.")
-    time.sleep(0.5)
+    input(f"[{i+1}/18] Plug in {label} to channel 0, then press Enter...")
+    kit.servo[0].angle = 90
+    print(f"  → Holding at 90°. Attach horn now.")
+    input(f"  → Press Enter when horn is attached and screwed in...")
+    kit.servo[0].angle = None
+    print(f"  → {label} done. Unplug it.\n")
 
-print("\nAll servos calibrated!")
+print("All 18 servos calibrated!")
+
