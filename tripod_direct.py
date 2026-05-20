@@ -21,8 +21,9 @@ NEUTRAL_FEMUR = 90
 NEUTRAL_COXA  = 90
 NEUTRAL_TIBIA = 90
 
-# How far forward/back legs swing
-SWING = 30
+# How far forward/back legs swing (split per side to correct drift)
+L_SWING = 42
+R_SWING = 30
 # How high legs lift
 LIFT  = 25
 
@@ -61,38 +62,38 @@ def step_forward():
     we'll test directions below
     """
     # Phase 1: Lift group A, swing forward
-    # Left legs in A (L1, L3): femur to 90-SWING = forward
-    # Right legs in A (R2): femur to 90+SWING = forward
+    # Left legs in A (L1, L3): femur to 90-L_SWING = forward
+    # Right legs in A (R2): femur to 90+R_SWING = forward
     # Coxa up: left=90-LIFT, right=90+LIFT
-    set_servo('L1', 90-SWING, 90-LIFT, 90)
-    set_servo('R2', 90+SWING, 90+LIFT, 90)
-    set_servo('L3', 90-SWING, 90-LIFT, 90)
+    set_servo('L1', 90-L_SWING, 90-LIFT, 90)
+    set_servo('R2', 90+R_SWING, 90+LIFT, 90)
+    set_servo('L3', 90-L_SWING, 90-LIFT, 90)
     # Group B stays on ground, push back
-    set_servo('R1', 90-SWING, 90, 90)
-    set_servo('L2', 90+SWING, 90, 90)
-    set_servo('R3', 90-SWING, 90, 90)
+    set_servo('R1', 90-R_SWING, 90, 90)
+    set_servo('L2', 90+L_SWING, 90, 90)
+    set_servo('R3', 90-R_SWING, 90, 90)
     time.sleep(0.3)
 
     # Phase 2: Plant group A
-    set_servo('L1', 90-SWING, 90, 90)
-    set_servo('R2', 90+SWING, 90, 90)
-    set_servo('L3', 90-SWING, 90, 90)
+    set_servo('L1', 90-L_SWING, 90, 90)
+    set_servo('R2', 90+R_SWING, 90, 90)
+    set_servo('L3', 90-L_SWING, 90, 90)
     time.sleep(0.1)
 
     # Phase 3: Lift group B, swing forward
-    set_servo('R1', 90+SWING, 90+LIFT, 90)
-    set_servo('L2', 90-SWING, 90-LIFT, 90)
-    set_servo('R3', 90+SWING, 90+LIFT, 90)
+    set_servo('R1', 90+R_SWING, 90+LIFT, 90)
+    set_servo('L2', 90-L_SWING, 90-LIFT, 90)
+    set_servo('R3', 90+R_SWING, 90+LIFT, 90)
     # Group A push back
-    set_servo('L1', 90+SWING, 90, 90)
-    set_servo('R2', 90-SWING, 90, 90)
-    set_servo('L3', 90+SWING, 90, 90)
+    set_servo('L1', 90+L_SWING, 90, 90)
+    set_servo('R2', 90-R_SWING, 90, 90)
+    set_servo('L3', 90+L_SWING, 90, 90)
     time.sleep(0.3)
 
     # Phase 4: Plant group B
-    set_servo('R1', 90+SWING, 90, 90)
-    set_servo('L2', 90-SWING, 90, 90)
-    set_servo('R3', 90+SWING, 90, 90)
+    set_servo('R1', 90+R_SWING, 90, 90)
+    set_servo('L2', 90-L_SWING, 90, 90)
+    set_servo('R3', 90+R_SWING, 90, 90)
     time.sleep(0.1)
 
     neutral()
